@@ -304,5 +304,10 @@
             <artifactId>microprofile-reactive-streams-operators-core</artifactId>
             <scope>provided</scope>
         </dependency>
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-context-propagation</artifactId>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 </project>
