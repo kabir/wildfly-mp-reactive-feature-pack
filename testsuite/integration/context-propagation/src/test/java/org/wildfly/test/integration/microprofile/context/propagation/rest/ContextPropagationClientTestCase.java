@@ -104,28 +104,24 @@ public class ContextPropagationClientTestCase {
                 .statusCode(Response.Status.OK.getStatusCode());
     }
 
-    @Ignore("we don't have servlet context propagation yet")
     @Test
     public void testServletContextManagedExecutorPropagation() {
         RestAssured.when().get(url.toExternalForm() + "context/servlet").then()
                 .statusCode(Response.Status.OK.getStatusCode());
     }
 
-    @Ignore("we don't have servlet context propagation yet")
     @Test
     public void testServletContextThreadContextPropagation() {
         RestAssured.when().get(url.toExternalForm() + "context/servlet-tc").then()
                 .statusCode(Response.Status.OK.getStatusCode());
     }
 
-    @Ignore("we don't have servlet context propagation yet")
     @Test
     public void testServletContextRxJavaPropagation() {
         RestAssured.when().get(url.toExternalForm() + "context/servlet-rxjava").then()
                 .statusCode(Response.Status.OK.getStatusCode());
     }
 
-    @Ignore("we don't have servlet context propagation yet")
     @Test
     public void testServletContextRsoPropagation() {
         RestAssured.when().get(url.toExternalForm() + "context/servlet-rso").then()
