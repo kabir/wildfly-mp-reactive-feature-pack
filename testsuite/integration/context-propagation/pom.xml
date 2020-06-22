@@ -76,6 +76,15 @@
             <artifactId>reactive-streams</artifactId>
             <scope>test</scope>
         </dependency>
+
+        <!--
+            TODO don't commit this!!!! it is just here to get access to the class in the debugger
+        -->
+        <dependency>
+            <groupId>org.jboss.resteasy</groupId>
+            <artifactId>resteasy-rxjava2</artifactId>
+            <version>3.12.1.Final</version>
+        </dependency>
     </dependencies>
 
     <build>
