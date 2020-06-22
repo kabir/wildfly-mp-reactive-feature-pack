@@ -34,6 +34,7 @@ public class ServletRequestContextProvider implements ThreadContextProvider {
     @Override
     public ThreadContextSnapshot currentContext(Map<String, String> props) {
         ServletRequestContext captured = ServletRequestContext.current();
+        System.out.println("---> captured " + captured);
         return () -> {
             ServletRequestContext current = restore(captured);
             return () -> restore(current);
@@ -41,11 +42,15 @@ public class ServletRequestContextProvider implements ThreadContextProvider {
     }
 
     private ServletRequestContext restore(ServletRequestContext context) {
+        System.out.println("---> restoring " + context);
         ServletRequestContext currentContext = ServletRequestContext.current();
-        if (context == null)
+        if (context == null) {
+            System.out.println("---> Clearing");
             ServletRequestContext.clearCurrentServletAttachments();
-        else
+        } else {
+            System.out.println("---> Setting current " + context);
             ServletRequestContext.setCurrentRequestContext(context);
+        }
         return currentContext;
     }
 
