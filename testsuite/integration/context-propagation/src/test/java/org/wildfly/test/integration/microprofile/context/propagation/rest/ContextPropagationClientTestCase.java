@@ -86,21 +86,18 @@ public class ContextPropagationClientTestCase {
                 .statusCode(Response.Status.OK.getStatusCode());
     }
 
-    @Ignore("TODO we don't have RestEasy context propagation yet")
     @Test
     public void testRESTEasyThreadContextPropagation() {
         RestAssured.when().get(url.toExternalForm() + "context/resteasy-tc").then()
                 .statusCode(Response.Status.OK.getStatusCode());
     }
 
-    @Ignore("TODO we don't have RestEasy context propagation yet")
     @Test
     public void testRESTEasyRxJavaPropagation() {
         RestAssured.when().get(url.toExternalForm() + "context/resteasy-rxjava").then()
                 .statusCode(Response.Status.OK.getStatusCode());
     }
 
-    @Ignore("TODO we don't have RestEasy context propagation yet")
     @Test
     public void testRESTEasyRsoJavaPropagation() {
         RestAssured.when().get(url.toExternalForm() + "context/resteasy-rso").then()
