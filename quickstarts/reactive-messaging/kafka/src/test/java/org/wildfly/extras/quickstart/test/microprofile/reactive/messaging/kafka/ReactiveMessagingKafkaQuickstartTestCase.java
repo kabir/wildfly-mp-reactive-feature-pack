@@ -16,6 +16,8 @@
 
 package org.wildfly.extras.quickstart.test.microprofile.reactive.messaging.kafka;
 
+import static org.awaitility.Awaitility.await;
+
 import java.io.File;
 import java.net.URL;
 import java.util.List;
@@ -41,8 +43,9 @@ import org.jboss.shrinkwrap.api.spec.WebArchive;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.testcontainers.containers.KafkaContainer;
 import org.wildfly.extras.quickstart.microprofile.reactive.messaging.PriceConverter;
+
+import io.strimzi.StrimziKafkaContainer;
 /**
  * @author <a href="mailto:kabir.khan@jboss.com">Kabir Khan</a>
  */
@@ -52,7 +55,6 @@ import org.wildfly.extras.quickstart.microprofile.reactive.messaging.PriceConver
         ReactiveMessagingKafkaQuickstartTestCase.AmqpBootstrapServerSetupTask.class,
         ReactiveMessagingKafkaQuickstartTestCase.AllowExperimentalAnnotationsSetupTask.class})
 public class ReactiveMessagingKafkaQuickstartTestCase {
-    private static final KafkaContainer KAFKA = new KafkaContainer();
 
     @ArquillianResource
     URL url;
@@ -102,12 +104,12 @@ public class ReactiveMessagingKafkaQuickstartTestCase {
     }
 
     public static class AmqpBootstrapServerSetupTask extends CLIServerSetupTask {
-
+        private StrimziKafkaContainer kafka;
         @Override
         public void setup(ManagementClient managementClient, String containerId) throws Exception {
-            KAFKA.start();
+            startKafkaBroker();
             this.builder.node("default")
-                    .setup("/system-property=kafka.bootstrap.servers:add(value=" + KAFKA.getBootstrapServers() + ")")
+                    .setup("/system-property=kafka.bootstrap.servers:add(value=" + kafka.getBootstrapServers() + ")")
                     .teardown("/system-property=kafka.bootstrap.servers:remove");
             super.setup(managementClient, containerId);
         }
@@ -117,7 +119,25 @@ public class ReactiveMessagingKafkaQuickstartTestCase {
             try {
                 super.tearDown(managementClient, containerId);
             } finally {
-                KAFKA.stop();
+                stopKafkaBroker();
+            }
+        }
+
+        public void startKafkaBroker() {
+
+            kafka = new StrimziKafkaContainer();
+            kafka.start();
+            await().until(() -> kafka.isRunning());
+        }
+
+        public void stopKafkaBroker() {
+            if (kafka != null) {
+                try {
+                    kafka.stop();
+                } catch (Exception e) {
+                    // Ignore it.
+                }
+                await().until(() -> !kafka.isRunning());
             }
         }
     }
